@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Collapsed Form Elements</title>
+<style>
+.label {
+	width: 400px;
+	margin: 10px 0 0 0;
+	padding: 10px;
+	background: #ccccff;
+	text-align: center;
+	border: 1px solid #cccff;
+}
+.elements {
+	border: 1px solid #ccccff;
+	padding: 10px;
+	border: 1px solid #ccccff;
+	width: 400px;
+}
+button {
+	margin: 20px;
+}
+</style>
+</head>
+<body>
+<form>
+	<div>
+		<div id="section1" class="label">
+			<p>Commuting Method</p>
+		</div>
+		<div id="section1b" class="elements">
+			<input type="checkbox" name="commuting" value="bus"> - By Bus<br>
+			<input type="checkbox" name="commuting" value="metro"> - By Metro<br>
+			<input type="checkbox" name="commuting" value="train"> - By Train<br>
+			<input type="checkbox" name="commuting" value="car"> - By Car<br>
+			<input type="checkbox" name="commuting" value="walking"> - By Walking<br>
+		</div>
+	</div>
+
+	<div>
+		<div id="section2" class="label">
+			<p>Gender</p>
+		</div>
+		<div class="elements">
+			<input type="radio" name="gender" value="male"> - Male<br>
+			<input type="radio" name="gender" value="female"> - Female<br>
+			<input type="radio" name="gender" value="universal"> - Universal<br>
+			<button>Submit</button>
+		</div>
+	</div>
+</form>
+
+<script>
+var elements = document.getElementsByTagName("div");
+
+// collapse all sections
+for (var i = 0, len = elements.length; i < len; i++) {
+	if (elements[i].className == "elements") {
+		elements[i].style.display = "none";
+	}
+	else if (elements[i].className == "label") {
+		elements[i].onclick = switchDisplay;
+	}
+}
+
+// collapse or expand depending on state
+function switchDisplay() {
+	var parent = this.parentNode;
+	console.log(parent);
+	var target = parent.getElementsByTagName("div")[1];
+	console.log(target);
+
+	if (target.style.display == "none") {
+		target.style.display = "block";
+	}
+	else {
+		target.style.display = "none";
+	}
+	return false;
+}
+
+</script>
+
+
+
+</body>
+</html>

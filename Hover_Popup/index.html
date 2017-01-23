@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hover-Based Pop-up</title>
+</head>
+<body>
+	<h1>Hover-Based Pop-up Info Windows</h1>
+	<div>
+		<img id="one" src="http://placehold.it/350x150/fff000" alt="yellow">
+		<img id="two" src="http://placehold.it/350x150/ff3300" alt="yellow">
+		<img id="three" src="http://placehold.it/350x150/f77777" alt="yellow">
+	</div>
+</body>
+</html>
+
+<script>
+window.onload = function() {
+	var imgs = document.getElementsByTagName("img");
+	console.log(imgs);
+	for (var i = 0, len = imgs.length; i < len; i++) {
+		imgs[i].addEventListener("mouseover", getInfo, false);
+		imgs[i].addEventListener("mouseout", removeWindow, false);
+	}
+};
+
+function getInfo() {
+	//Prepare request
+	if (!xmlhttp) {
+	// if (window.XMLHttpRequest) {
+		xmlhttp = new XMLHttpRequest();
+	}
+	console.log(xmlhttp);
+	var value = this.getAttribute("id");
+	var url = "photos.php?photo=" + value;
+	xmlhttp.open('GET', url, true);
+	xmlhttp.onreadystatechange = showWindow;
+	xmlhttp.send(null);
+
+	return false;
+}
+
+//Compute position for pop up
+function compPos(obj) {
+	var rect = obj.getBoundingClientRect();
+	var height;
+	if (rect.height) {
+		height = rect.height;
+	}
+	else {
+		height = rect.bottom - rect.top;
+	}
+	var top = rect.top + height + 10;
+	return [rect.left, top];
+}
+
+//Process return
+function showWindow() {
+	if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		var response = xmlhttp.responseText.split("#");
+		var img = document.getElementById(response[0]);
+
+		if(!img) return;
+
+		//Derive location for pop up
+		var loc = compPos(img);
+		var left = loc[0] + "px";
+		var top = loc[1] + "px";
+
+		//Create pop up
+		var div = document.createElement("popup");
+		div.id = "popup";
+		var txt = document.createTextNode(response[1]);
+		div.appendChild(txt);
+
+		//Style pop up
+		div.setAttribute("class", "popup");
+		div.setAttribute("style", "left: " + left + "; top: " + top + ";");
+		document.body.appendChild(div);
+	}
+}
+
+function removeWindow() {
+	var popup = document.getElementById("popup");
+	if (popup)
+		popup.parentNode.removeChild(popup);
+
+	return false;
+}
+</script>
