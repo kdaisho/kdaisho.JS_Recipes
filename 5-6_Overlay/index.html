@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>5-7 Overlay &amp; message</title>
+</head>
+<style>
+body {
+    background: #cedc00;
+    text-align: center;
+}
+h1, p {
+    font-family: Helvetica, sans-serif;
+}
+.overlay {
+    background: #000;
+    opacity: .5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+.overlaymsg {
+    position: fixed;
+    background: yellow;
+    padding: 10px;
+    width: 200px;
+    height: 200px;
+    font-size: 1.2em;
+    z-index: 11;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -100px;
+}
+</style>
+<body>
+<h1>5-7 Creating an overlay for displaying a message</h1>
+<p>We could also statically create a section (html) to display and hide it when not in use, but this just cutting up the page contants and can, depending on how it’s formatted, have adverse impact on screen readers. So it’s preferable to let JavaScript generate popup message and an overlay dynamically.</p>
+<script>
+function displayPopup() {
+    var overlay = document.createElement("div");
+    overlay.setAttribute("id", "overlay");
+    overlay.setAttribute("class", "overlay");
+    document.body.appendChild(overlay);
+
+    var msg = document.createElement("div");
+    var txt = document.createTextNode("Please join our mailing list! (Click to close)");
+    msg.appendChild(txt);
+    msg.setAttribute("id", "msg");
+    msg.setAttribute("class", "overlaymsg");
+
+    msg.onclick = restore;
+
+    document.body.appendChild(msg);
+}
+
+function restore() {
+    document.body.removeChild(document.getElementById("overlay"));
+    document.body.removeChild(document.getElementById("msg"));
+}
+
+window.onload = function() {
+    displayPopup();
+}
+</script>    
+</body>
+</html>
